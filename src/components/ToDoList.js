@@ -28,6 +28,17 @@ export default function ToDoList() {
                 setIsLoading( false );
             } );
     };
+
+    /**
+     * 
+     * @param { number } id - The id of the task to delete
+     */
+    const deleteTask = ( id ) => {
+        db.tasks.delete( id )
+            .then( () => {
+                fetchTasks();
+            } );
+    };
     
     useEffect( () => {
         fetchTasks();
@@ -49,7 +60,11 @@ export default function ToDoList() {
             { tasks &&
                 <List>
                     { tasks.map( task => (
-                        <ToDoItem task={ task } key={ task.title } />
+                        <ToDoItem
+                            key={ task.title }
+                            task={ task }
+                            deleteTask={ deleteTask }
+                        />
                     ) ) }
                 </List>
             }
