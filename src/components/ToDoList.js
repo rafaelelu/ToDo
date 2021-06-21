@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
 import ToDoItem from './ToDoItem';
 import DexieSingleton from '../data/DexieSingleton';
 
 export default function ToDoList() {
+    const history = useHistory();
     const [ tasks, setTasks ] = useState( [] );
     const [ error, setError ] = useState( null );
     const [ isLoading, setIsLoading ] = useState( true );
@@ -26,25 +28,6 @@ export default function ToDoList() {
                 setIsLoading( false );
             } );
     };
-
-    /**
-     * 
-     * @param { Object } task - The task to be added
-     * @param { string } task.title - The task's title
-     * @param { string } task.description - The task's description
-     * @param { bool } task.important - If the task is important or not
-     * @param { bool } task.urgent - If the task is urgent or not
-     */
-    const addTask = ( task ) => {
-        db.tasks.add( task )
-            .then( () => {
-                fetchTasks();
-            } )
-            .catch( ( error ) => {
-                setError( error.message );
-            } );
-    };
-
     
     useEffect( () => {
         fetchTasks();
@@ -56,12 +39,7 @@ export default function ToDoList() {
                 variant="contained"
                 color="primary"
                 onClick={ () => {
-                    addTask( {
-                        title: 'Another task',
-                        description: 'Tak\'s description',
-                        important: false,
-                        urgent: false
-                    } );
+                    history.push( '/create' );
                 } }
             >
                     New task
