@@ -21,7 +21,6 @@ export default function Create() {
     const [ title, setTitle ] = useState( '' );
     const [ titleError, setTitleError ] = useState( false );
     const [ description, setDescription ] = useState( '' );
-    const [ descriptionError, setDescriptionError ] = useState( false );
     const [ important, setImportant ] = useState( false );
     const [ urgent, setUrgent ] = useState( false );
 
@@ -50,9 +49,8 @@ export default function Create() {
         event.preventDefault();
 
         setTitleError( title === '' );
-        setDescriptionError( description === '' );
 
-        if ( title && description ) {
+        if ( title ) {
             addTask( { title, description, important, urgent } );
         }
     };
@@ -61,7 +59,6 @@ export default function Create() {
         <Container>
             <Typography
                 variant="h6"
-                color="textSecondary"
                 component="h2"
                 gutterBottom
             >
@@ -87,8 +84,6 @@ export default function Create() {
                     multiline
                     rows={ 4 }
                     fullWidth
-                    required
-                    error={ descriptionError }
                 />
 
                 <Button
