@@ -37,7 +37,7 @@ export default function Create() {
      const addTask = ( task ) => {
         db.tasks.add( task )
             .then( () => {
-                history.push( '/' );
+                history.push( '/index.html' );
             } );
     };
 
@@ -87,7 +87,7 @@ export default function Create() {
                 />
 
                 <Button
-                    onClick={ () => history.push( '/' ) }
+                    onClick={ () => history.push( '/index.html' ) }
                     type="button"
                     variant="contained"
                 >
