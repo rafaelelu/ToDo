@@ -1,23 +1,20 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
 import ToDoItem from './ToDoItem';
-import DexieSingleton from '../data/DexieSingleton';
+import DBServices from '../data/DBServices';
 
 export default function ToDoList() {
-    const history = useHistory();
     const [ tasks, setTasks ] = useState( [] );
     const [ error, setError ] = useState( null );
     const [ isLoading, setIsLoading ] = useState( true );
-    const db = DexieSingleton.getInstance();
 
     /**
      * Fetches the tasks from the local db
      */
     const fetchTasks = () => {
         setIsLoading( true );
-        db.tasks.toArray()
+        DBServices.getAll()
             .then( ( tasks ) => {
                 setTasks( tasks );
             } )
@@ -34,7 +31,7 @@ export default function ToDoList() {
      * @param { number } id - The id of the task to delete
      */
     const deleteTask = ( id ) => {
-        db.tasks.delete( id )
+        DBServices.delete( id )
             .then( () => {
                 fetchTasks();
             } );
@@ -50,7 +47,9 @@ export default function ToDoList() {
                 variant="contained"
                 color="primary"
                 onClick={ () => {
-                    history.push( '/create' );
+                    DBServices.add( {
+                        title: 'Task ' + parseInt( Math.random() * 100 )
+                    } ).then( res => fetchTasks() );
                 } }
             >
                     New task

@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import DexieSingleton from '../data/DexieSingleton';
+import DBServices from '../data/DBServices';
 
 const useStyles = makeStyles( {
     field: {
@@ -16,7 +15,6 @@ const useStyles = makeStyles( {
 
 export default function Create() {
     const classes = useStyles();
-    const history = useHistory();
 
     const [ title, setTitle ] = useState( '' );
     const [ titleError, setTitleError ] = useState( false );
@@ -24,22 +22,7 @@ export default function Create() {
     const [ important, setImportant ] = useState( false );
     const [ urgent, setUrgent ] = useState( false );
 
-    const db = DexieSingleton.getInstance();
-
-    /**
-     * 
-     * @param { Object } task - The task to be added
-     * @param { string } task.title - The task's title
-     * @param { string } task.description - The task's description
-     * @param { bool } task.important - If the task is important or not
-     * @param { bool } task.urgent - If the task is urgent or not
-     */
-     const addTask = ( task ) => {
-        db.tasks.add( task )
-            .then( () => {
-                history.push( '/index.html' );
-            } );
-    };
+    const db = DBServices.getInstance();
 
     /**
      * Handles the submit event
@@ -87,9 +70,15 @@ export default function Create() {
                 />
 
                 <Button
-                    onClick={ () => history.push( '/index.html' ) }
+                    onClick={ () => {
+                        DBServices.add( {
+                            title: 'Task ' + parseInt( Math.random() * 100 )
+                        } )
+                            .then( res => console.log( 'added' ) );
+                    } }
                     type="button"
                     variant="contained"
+                    color="secondary"
                 >
                     Cancel
                 </Button>
