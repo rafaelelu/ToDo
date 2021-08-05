@@ -7,35 +7,29 @@ import DBServices from '../data/DBServices';
 export default function ToDoList() {
     const [ tasks, setTasks ] = useState( [] );
     const [ error, setError ] = useState( null );
-    const [ isLoading, setIsLoading ] = useState( true );
 
     /**
-     * Fetches the tasks from the local db
+     * Fetches the tasks from the local db.
      */
-    const fetchTasks = () => {
-        setIsLoading( true );
-        DBServices.getAll()
-            .then( ( tasks ) => {
-                setTasks( tasks );
-            } )
-            .catch( ( error ) => {
-                setError( error );
-            } )
-            .finally( () => {
-                setIsLoading( false );
-            } );
-    };
+    async function fetchTasks() {
+        try {
+            const tasks = await DBServices.getAll();
+            setTasks( tasks );
+        } catch( error ) {
+            setError( error );
+        }
+    }
 
     /**
-     * 
+     * Deletes a task.
      * @param { number } id - The id of the task to delete
      */
-    const deleteTask = ( id ) => {
-        DBServices.delete( id )
-            .then( () => {
-                fetchTasks();
-            } );
-    };
+    async function deleteTask( id ) {
+        try {
+            await DBServices.delete( id );
+            fetchTasks();
+        } catch( error ) {}
+    }
     
     useEffect( () => {
         fetchTasks();
@@ -55,7 +49,6 @@ export default function ToDoList() {
                     New task
             </Button>
             { error && <p>{ error.message }</p> }
-            { isLoading && <p>Loading...</p> }
             { tasks &&
                 <List>
                     { tasks.map( task => (
