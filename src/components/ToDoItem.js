@@ -5,11 +5,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 export default function ToDoItem( { task, deleteTask } ) {
     return (
-        <ListItem divider>
+        <ListItem divider dense>
             <ListItemIcon>
                 <Checkbox onChange={ () => deleteTask( task.id ) } />
             </ListItemIcon>
-            <ListItemText primary={ task.title } secondary={ task.description } />
+            <ListItemText primary={ task.title } />
         </ListItem>
     );
 }

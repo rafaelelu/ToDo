@@ -1,10 +1,23 @@
 import { useState, useEffect } from 'react';
 import List from '@material-ui/core/List';
-import Button from '@material-ui/core/Button';
 import ToDoItem from './ToDoItem';
 import DBServices from '../data/DBServices';
+import { makeStyles } from '@material-ui/core';
+import CreateItem from './CreateItem';
+
+/**
+ * @external Task
+ * @see ../data/DBServices.js
+ */
+
+const useStyles = makeStyles( {
+        list: {
+            paddingTop: 0
+        }
+} );
 
 export default function ToDoList() {
+    const classes = useStyles();
     const [ tasks, setTasks ] = useState( [] );
     const [ error, setError ] = useState( null );
 
@@ -21,6 +34,19 @@ export default function ToDoList() {
     }
 
     /**
+     * Add a task to the DB.
+     * @param { Task } task 
+     */
+    async function addTask( task ) {
+        try {
+            await DBServices.add( task );
+            fetchTasks();
+        } catch( error ) {
+            setError( error );
+        }
+    }
+
+    /**
      * Deletes a task.
      * @param { number } id - The id of the task to delete
      */
@@ -28,7 +54,9 @@ export default function ToDoList() {
         try {
             await DBServices.delete( id );
             fetchTasks();
-        } catch( error ) {}
+        } catch( error ) {
+            setError( error );
+        }
     }
     
     useEffect( () => {
@@ -37,28 +65,20 @@ export default function ToDoList() {
 
     return(
         <div>
-            <Button
-                variant="contained"
-                color="primary"
-                onClick={ () => {
-                    DBServices.add( {
-                        title: 'Task ' + parseInt( Math.random() * 100 )
-                    } ).then( res => fetchTasks() );
-                } }
-            >
-                    New task
-            </Button>
             { error && <p>{ error.message }</p> }
             { tasks &&
-                <List>
-                    { tasks.map( task => (
-                        <ToDoItem
-                            key={ task.title }
-                            task={ task }
-                            deleteTask={ deleteTask }
-                        />
-                    ) ) }
-                </List>
+                <div>
+                    <CreateItem addTask={ addTask } />
+                    <List className={ classes.list }>
+                        { tasks.map( task => (
+                            <ToDoItem
+                                key={ task.title }
+                                task={ task }
+                                deleteTask={ deleteTask }
+                            />
+                        ) ) }
+                    </List>
+                </div>
             }
         </div>
     );

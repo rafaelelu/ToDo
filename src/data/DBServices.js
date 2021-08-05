@@ -5,9 +5,6 @@ export default class DBServices {
     /**
      * @typedef { Object } Task
      * @property { string } title - The task's title.
-     * @property { string } description - The task's description.
-     * @property { bool } important - If the task is important or not.
-     * @property { bool } urgent - If the task is urgent or not.
      */
 
     static db;
@@ -24,7 +21,7 @@ export default class DBServices {
         if ( !DBServices.db ) {
             DBServices.db = new Dexie( 'TaskDB' );
             DBServices.db.version(1).stores( {
-                tasks: '++id, title, description, important, urgent'
+                tasks: '++id, title'
             } );
         }
         return DBServices.db;

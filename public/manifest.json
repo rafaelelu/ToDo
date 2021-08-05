@@ -1,6 +1,6 @@
 {
-    "name": "Hello Extensions",
-    "description": "Base Level Extension",
+    "name": "Elu's ToDo List",
+    "description": "A simple React to do list",
     "version": "1.0",
     "manifest_version": 2,
     "browser_action": {
