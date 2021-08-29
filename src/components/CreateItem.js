@@ -6,7 +6,7 @@ import InputBase from '@material-ui/core/InputBase';
 
 const useStyles = makeStyles( theme => ( {
     textField: {
-        height: '51px',
+        height: '50px',
         display: 'flex',
         paddingLeft: '16px',
         paddingRight: '16px',

@@ -4,8 +4,8 @@ import ToDoList from './components/ToDoList';
 const useStyles = makeStyles( {
     root: {
         height: '600px',
-        width: '800px',
-        overflow: 'auto'
+        width: '750px',
+        overflow: 'hidden'
     }
 } );
 

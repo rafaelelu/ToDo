@@ -11,7 +11,16 @@ import CreateItem from './CreateItem';
  */
 
 const useStyles = makeStyles( {
+        root: {
+            height: '100%'
+        },
+        mainArea: {
+            height: '100%'
+        },
         list: {
+            // 50px is the height of the CreateItem
+            height: 'calc( 100% - 50px )',
+            overflow: 'auto',
             paddingTop: 0
         }
 } );
@@ -64,10 +73,10 @@ export default function ToDoList() {
     }, [] );
 
     return(
-        <div>
+        <div className={ classes.root }>
             { error && <p>{ error.message }</p> }
             { tasks &&
-                <div>
+                <div className={ classes.mainArea }>
                     <CreateItem addTask={ addTask } />
                     <List className={ classes.list }>
                         { tasks.map( task => (
