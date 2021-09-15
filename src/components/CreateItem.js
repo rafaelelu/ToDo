@@ -3,6 +3,8 @@ import { makeStyles } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import Add from '@material-ui/icons/Add';
 import InputBase from '@material-ui/core/InputBase';
+import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
+import SpeedIcon from '@material-ui/icons/Speed';
 
 const useStyles = makeStyles( theme => ( {
     textField: {
@@ -25,11 +27,30 @@ const useStyles = makeStyles( theme => ( {
 export default function CreateItem( { addTask } ) {
     const classes = useStyles();
     const [ title, setTitle ] = useState( '' );
+    const [ important, setImportant ] = useState( false );
+    const [ urgent, setUrgent ] = useState( false );
 
+    /**
+     * Clears the text input, the importance icon button and the urgency icon button.
+     */
+    function clearInputs() {
+        setTitle( '' );
+        setImportant( false );
+        setUrgent( false );
+    }
+
+    /**
+     * Adds a new task and clears the inputs.
+     */
     function handleSubmit() {
         if ( title.trim() ) {
-            addTask( { title } );
-            setTitle( '' );
+            addTask( {
+                title: title,
+                important: important,
+                urgent: urgent,
+                checked: false
+            } );
+            clearInputs();
         }
     }
 
@@ -38,6 +59,7 @@ export default function CreateItem( { addTask } ) {
             <IconButton
                 className={ classes.iconButton }
                 aria-label="add new"
+                title="Add new task"
                 onClick={ () => handleSubmit() }
             >
                 <Add />
@@ -53,8 +75,14 @@ export default function CreateItem( { addTask } ) {
                 } }
                 onChange={ ( event ) => setTitle( event.target.value ) }
                 placeholder="Add a new task"
-                inputProps={ { 'aria-label': 'add a new task' } }
+                inputProps={ { 'aria-label': 'Add new task' } }
             />
+            <IconButton onClick={ () => setImportant( !important ) } title="Important">
+                <PriorityHighIcon color={ important ? 'secondary' : 'action' } />
+            </IconButton>
+            <IconButton onClick={ () => setUrgent( !urgent ) } title="Urgent">
+                <SpeedIcon color={ urgent ? 'secondary' : 'action' } />
+            </IconButton>
         </div>
     );
 }
