@@ -56,6 +56,19 @@ export default function ToDoList() {
     }
 
     /**
+     * Update a task.
+     * @param { Task } task 
+     */
+    async function updateTask( task ) {
+        try {
+            await DBServices.update( task );
+            fetchTasks();
+        } catch( error ) {
+            setError( error );
+        }
+    }
+
+    /**
      * Deletes a task.
      * @param { number } id - The id of the task to delete
      */
@@ -83,6 +96,7 @@ export default function ToDoList() {
                             <ToDoItem
                                 key={ task.title }
                                 task={ task }
+                                updateTask={ updateTask }
                                 deleteTask={ deleteTask }
                             />
                         ) ) }
